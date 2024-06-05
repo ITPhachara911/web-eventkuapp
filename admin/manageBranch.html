@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>จัดการหน่วยงานย่อย</title>
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="css/fontawesome.min.css"> -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/ionicons.min.css">
+    <link rel="stylesheet" href="css/adminlte.min.css">
+    <link rel="stylesheet" href="css/skin.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+    <!-- Option 1: Include in HTML -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+
+</head>
+
+<body class="skin-blue">
+
+
+    <div class="wrapper">
+
+        <!-- Main Header -->
+        <header class="main-header">
+
+            <!-- Logo -->
+            <a href="index2.html" class="logo">
+                <!-- mini logo for sidebar mini 50x50 pixels -->
+                <span class="logo-mini"><b>A</b>LT</span>
+                <!-- logo for regular state and mobile devices -->
+                <span class="logo-lg">Event KU</span>
+            </a>
+
+            <!-- Header Navbar -->
+            <nav class="navbar navbar-static-top" role="navigation">
+                <!-- Sidebar toggle button-->
+                <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                </a>
+                <!-- Navbar Right Menu -->
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <!-- Messages: style can be found in dropdown.less-->
+
+                        <li class="dropdown user user-menu">
+                            <!-- Menu Toggle Button -->
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <!-- The user image in the navbar-->
+                                <img src="img/profile.jpeg" class="user-image" alt="User Image">
+                                <!-- hidden-xs hides the username on small devices so only the image appears. -->
+                                <span class="hidden-xs">Alexander Pierce</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <!-- The user image in the menu -->
+                                <li class="user-header">
+                                    <img src="img/profile.jpeg" class="img-circle" alt="User Image">
+
+                                    <p>
+                                        พนักงาน
+                                        <small>Member since Nov. 2012</small>
+                                    </p>
+                                </li>
+
+                                <li class="user-body">
+                                    <div class="row">
+                                        <div class="col-xs-4 text-center">
+                                            <div>
+                                                <p>พนักงาน</p>
+                                            </div>
+                                        </div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <!-- Left side column. contains the logo and sidebar -->
+        <aside class="main-sidebar">
+            <!-- sidebar: style can be found in sidebar.less -->
+            <section class="sidebar">
+
+                <!-- Sidebar Menu -->
+                <ul class="sidebar-menu" data-widget="tree">
+                    <li class="header">เมนู</li>
+                    <!-- Optionally, you can add icons to the links -->
+                    <li><a href="index.html"><i class="fa fa-link"></i> <span>จัดการกิจกรรม</span></a>
+                    </li>
+                    <li><a href="manageLocation.html"><i class="fa fa-link"></i>
+                            <span>จัดการอาคารหรือสถานที่</span></a>
+                    </li>
+                    <li><a href="managePersonel.html"><i class="fa fa-link"></i> <span>จัดการบุคลากร</span></a></li>
+                    <li><a href="manageRoom.html"><i class="fa fa-link"></i> <span>จัดการห้อง</span></a>
+                    </li>
+                    <li><a href="manageFaculty.html"><i class="fa fa-link"></i> <span>จัดการหน่วยงานหลัก</span></a></li>
+                    <li class="active"><a href="manageBranch.html"><i class="fa fa-link"></i>
+                            <span>จัดการหน่วยงานย่อย</span></a></li>
+                    <li class="treeview">
+                        <a href="#"><i class="fa fa-link"></i> <span>ตั้งค่า</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="#">ตั้งค่าผู้ใช้</a></li>
+                            <li><a href="#">ออกจากระบบ</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <!-- /.sidebar-menu -->
+            </section>
+            <!-- /.sidebar -->
+        </aside>
+
+        <!-- Content header -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <div style="display:  flex;  justify-content:space-between;">
+                    <div>
+                        <h3>
+                            การจัดการหน่วยงานย่อย
+                        </h3>
+                    </div>
+                    <div style="margin-top: 20px; padding-left: 20px;">
+
+                        <button data-toggle="modal" data-target="#exampleModal" class="btn btn-success"><i
+                                class="fa fa-plus"> </i> เพิ่มหน่วยงานย่อย</button>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title" id="exampleModalLabel">เพิ่มหน่วยงานย่อย</h3>
+                            </div>
+                            <div class="modal-body">
+                                <label for="">ชื่อ : </label>
+                                <input class="form-control" type="text">
+                                <label for="">สังกัดหน่วยงานหลัก : </label>
+                                <select class="form-control" name="" id="">
+                                    <option value="1">เลือก</option>
+                                </select>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                                <button type="button" class="btn btn-primary">เพิ่ม</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title" id="exampleModalLabel">แก้ไขหน่วยงานย่อย</h3>
+                            </div>
+                            <div class="modal-body">
+                                <label for="">ชื่อ : </label>
+                                <input id="edit-name" class="form-control" type="text">
+                                <label for="">สังกัดหน่วยงานหลัก : </label>
+                                <select class="form-control" name="" id="">
+                                    <option value="1">เลือก</option>
+                                </select>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                                <button type="button" class="btn btn-primary">บันทึก</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- Main content -->
+            <section class="content container-fluid">
+                <table id="myTable">
+                    <thead>
+                        <tr>
+                            <th>ลำดับ</th>
+                            <th>ชื่อ</th>
+                            <th>สังกัดหน่วยงานหลัก</th>
+                            <th>จัดการ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- ที่นี่จะเพิ่มข้อมูลในภายหลัง -->
+                    </tbody>
+                </table>
+            </section>
+            <!-- /.content -->
+        </div>
+
+        <div class="control-sidebar-bg"></div>
+        <!-- content -->
+    </div>
+    <!-- ./wrapper -->
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/adminlte.min.js"></script>
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+    <!-- Thai language file -->
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/plug-ins/1.10.24/i18n/Thai.json"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.1/dist/sweetalert2.all.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            var data;
+
+            function editBranch(id) {
+                var selectedData = data[id - 1];
+                $('#edit-name').val(selectedData.name)
+                $('#edit-modal').modal('show');
+            }
+
+            function delEven(id) {
+                var selectedData = data[id];
+                console.log(selectedData);
+                Swal.fire({
+                    title: "ยืนยันการลบหน่วยงานย่อย",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "ยืนยัน",
+                    cancelButtonText: "ยกเลิก"
+                });
+                /*
+                $.ajax({
+                  url: 'URL_API_ของคุณ',
+                  type: 'DELETE',
+                  data: { id: selectedData.id },
+                  success: function(response) {
+                    console.log('ลบข้อมูลสำเร็จ', response);
+              
+                    / 
+                    loadDataFromApi();
+                  },
+                  error: function(error) {
+                    console.error('เกิดข้อผิดพลาดในการลบข้อมูล', error);
+                  }
+                });
+                */
+            }
+
+            function loadDataFromApi() {
+                $.ajax({
+                    url: "../api/getEven.php",
+                    type: 'GET',
+                    success: function (response) {
+                        data = JSON.parse(response);
+                        updateDataTable(data);
+                    },
+                    error: function (error) {
+                        console.error('เกิดข้อผิดพลาดในการโหลดข้อมูลจาก API', error);
+                    }
+                });
+            }
+
+            function updateDataTable(data) {
+                var tableBody = $('#tableBody');
+                tableBody.empty();
+
+                $.each(data, function (index, item) {
+                    var editButton = $('<button>', {
+                        text: 'แก้ไข',
+                        class: 'btn btn-warning',
+                        style: 'margin-right:5px;',
+                        click: function () {
+                            editBranch(item.id);
+                        }
+                    });
+                    var delButton = $('<button>', {
+                        text: 'ลบ',
+                        class: 'btn btn-danger',
+                        style: 'margin-left:5px;',
+                        click: function () {
+                            delEven(item.id);
+                        }
+                    });
+
+                    delButton.append('<i style="margin-left:2px;" class="bi bi-trash"></i>');
+                    editButton.append('<i style="margin-left:2px;" class="bi bi-pencil"></i>');
+                    tableBody.append($('<tr>').append($('<td>').text(item.id), $('<td>').text("-"), $('<td>').text("-"), $('<td>').append(editButton, delButton)));
+                });
+
+                // เปิดใช้ DataTables
+                $('#myTable').DataTable({
+                    "language": {
+                        "url": "https://cdn.datatables.net/plug-ins/1.10.24/i18n/Thai.json",
+
+                    }
+                });
+            }
+
+            loadDataFromApi();
+        });
+
+    </script>
+</body>
+
+</html>
