@@ -1,331 +1,613 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>จัดการบุคลากร</title>
 
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
     <!-- <link rel="stylesheet" href="css/fontawesome.min.css"> -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="css/ionicons.min.css">
-    <link rel="stylesheet" href="css/adminlte.min.css">
-    <link rel="stylesheet" href="css/skin.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link rel="stylesheet" href="css/ionicons.min.css" />
+    <link rel="stylesheet" href="css/adminlte.min.css" />
+    <link rel="stylesheet" href="css/skin.min.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css"
+    />
     <!-- Option 1: Include in HTML -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
+    />
+  </head>
 
-</head>
-
-<body class="skin-blue">
-
-
+  <body class="skin-blue">
     <div class="wrapper">
+      <!-- Main Header -->
+      <header class="main-header">
+        <!-- Logo -->
+        <a href="index.html" class="logo">
+          <!-- mini logo for sidebar mini 50x50 pixels -->
+          <span class="logo-mini"><b>A</b>LT</span>
+          <!-- logo for regular state and mobile devices -->
+          <span class="logo-lg">Event KU</span>
+        </a>
 
-        <!-- Main Header -->
-        <header class="main-header">
+        <!-- Header Navbar -->
+        <nav class="navbar navbar-static-top" role="navigation">
+          <!-- Sidebar toggle button-->
+          <a
+            href="#"
+            class="sidebar-toggle"
+            data-toggle="push-menu"
+            role="button"
+          >
+            <span class="sr-only">Toggle navigation</span>
+          </a>
+          <!-- Navbar Right Menu -->
+          <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+              <!-- Messages: style can be found in dropdown.less-->
 
-            <!-- Logo -->
-            <a href="index2.html" class="logo">
-                <!-- mini logo for sidebar mini 50x50 pixels -->
-                <span class="logo-mini"><b>A</b>LT</span>
-                <!-- logo for regular state and mobile devices -->
-                <span class="logo-lg">Event KU</span>
-            </a>
-
-            <!-- Header Navbar -->
-            <nav class="navbar navbar-static-top" role="navigation">
-                <!-- Sidebar toggle button-->
-                <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
-                    <span class="sr-only">Toggle navigation</span>
+              <li class="dropdown user user-menu">
+                <!-- Menu Toggle Button -->
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  <!-- The user image in the navbar-->
+                  <img
+                    src="img/profile.jpeg"
+                    class="user-image"
+                    alt="User Image"
+                  />
+                  <!-- hidden-xs hides the username on small devices so only the image appears. -->
+                  <span class="hidden-xs">Alexander Pierce</span>
                 </a>
-                <!-- Navbar Right Menu -->
-                <div class="navbar-custom-menu">
-                    <ul class="nav navbar-nav">
-                        <!-- Messages: style can be found in dropdown.less-->
+                <ul class="dropdown-menu">
+                  <!-- The user image in the menu -->
+                  <li class="user-header">
+                    <img
+                      src="img/profile.jpeg"
+                      class="img-circle"
+                      alt="User Image"
+                    />
 
-                        <li class="dropdown user user-menu">
-                            <!-- Menu Toggle Button -->
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <!-- The user image in the navbar-->
-                                <img src="img/profile.jpeg" class="user-image" alt="User Image">
-                                <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                                <span class="hidden-xs">Alexander Pierce</span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <!-- The user image in the menu -->
-                                <li class="user-header">
-                                    <img src="img/profile.jpeg" class="img-circle" alt="User Image">
+                    <p>
+                      พนักงาน
+                      <small>Member since Nov. 2012</small>
+                    </p>
+                  </li>
 
-                                    <p>
-                                        พนักงาน
-                                        <small>Member since Nov. 2012</small>
-                                    </p>
-                                </li>
-
-                                <li class="user-body">
-                                    <div class="row">
-                                        <div class="col-xs-4 text-center">
-                                            <div>
-                                                <p>พนักงาน</p>
-                                            </div>
-                                        </div>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-        </header>
-        <!-- Left side column. contains the logo and sidebar -->
-        <aside class="main-sidebar">
-            <!-- sidebar: style can be found in sidebar.less -->
-            <section class="sidebar">
-
-                <!-- Sidebar Menu -->
-                <ul class="sidebar-menu" data-widget="tree">
-                    <li class="header">เมนู</li>
-                    <!-- Optionally, you can add icons to the links -->
-                    <li><a href="index.html"><i class="fa fa-link"></i> <span>จัดการกิจกรรม</span></a>
-                    </li>
-                    <li><a href="manageLocation.html"><i class="fa fa-link"></i>
-                            <span>จัดการอาคารหรือสถานที่</span></a>
-                    </li>
-                    <li class="active"><a href="managePersonel.html"><i class="fa fa-link"></i>
-                            <span>จัดการบุคลากร</span></a></li>
-                    <li><a href="manageRoom.html"><i class="fa fa-link"></i>
-                            <span>จัดการห้อง</span></a>
-                    </li>
-                    <li><a href="manageFaculty.html"><i class="fa fa-link"></i> <span>จัดการหน่วยงานหลัก</span></a></li>
-                    <li><a href="manageBranch.html"><i class="fa fa-link"></i> <span>จัดการหน่วยงานย่อย</span></a></li>
-                    <li class="treeview">
-                        <a href="#"><i class="fa fa-link"></i> <span>ตั้งค่า</span>
-                            <span class="pull-right-container">
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </span>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li><a href="#">ตั้งค่าผู้ใช้</a></li>
-                            <li><a href="#">ออกจากระบบ</a></li>
-                        </ul>
-                    </li>
+                  <li class="user-body">
+                    <div class="row">
+                      <div class="col-xs-4 text-center">
+                        <div>
+                          <p>พนักงาน</p>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
                 </ul>
-                <!-- /.sidebar-menu -->
-            </section>
-            <!-- /.sidebar -->
-        </aside>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </header>
+      <!-- Left side column. contains the logo and sidebar -->
+      <aside class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+          <!-- Sidebar Menu -->
+          <ul class="sidebar-menu" data-widget="tree">
+            <li class="header">เมนู</li>
+            <!-- Optionally, you can add icons to the links -->
+            <li>
+              <a href="index.html"
+                ><i class="fa fa-link"></i> <span>จัดการกิจกรรม</span></a
+              >
+            </li>
+            <li>
+              <a href="manageLocation.html"
+                ><i class="fa fa-link"></i>
+                <span>จัดการอาคารหรือสถานที่</span></a
+              >
+            </li>
+            <li class="active">
+              <a href="managePersonel.html"
+                ><i class="fa fa-link"></i> <span>จัดการบุคลากร</span></a
+              >
+            </li>
+            <li>
+              <a href="manageRoom.html"
+                ><i class="fa fa-link"></i> <span>จัดการห้อง</span></a
+              >
+            </li>
+            <li>
+              <a href="manageFaculty.html"
+                ><i class="fa fa-link"></i> <span>จัดการหน่วยงานหลัก</span></a
+              >
+            </li>
+            <li>
+              <a href="manageBranch.html"
+                ><i class="fa fa-link"></i> <span>จัดการหน่วยงานย่อย</span></a
+              >
+            </li>
+            <li class="treeview">
+              <a href="#"
+                ><i class="fa fa-link"></i> <span>ตั้งค่า</span>
+                <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="#">ตั้งค่าผู้ใช้</a></li>
+                <li><a href="#">ออกจากระบบ</a></li>
+              </ul>
+            </li>
+          </ul>
+          <!-- /.sidebar-menu -->
+        </section>
+        <!-- /.sidebar -->
+      </aside>
 
-        <!-- Content header -->
-        <div class="content-wrapper">
-            <!-- Content Header (Page header) -->
-            <section class="content-header">
-                <div style="display:  flex;  justify-content:space-between;">
-                    <div>
-                        <h3>
-                            การจัดการบุคลากร
-                        </h3>
-                    </div>
-                    <div style="margin-top: 20px; padding-left: 20px;">
+      <!-- Content header -->
+      <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          <div style="display: flex; justify-content: space-between">
+            <div>
+              <h3>การจัดการบุคลากร</h3>
+            </div>
+            <div style="margin-top: 20px; padding-left: 20px">
+              <button
+                data-toggle="modal"
+                data-target="#create-modal"
+                class="btn btn-success"
+                id="createPersonal"
+              >
+                <i class="fa fa-plus"> </i> เพิ่มบุคลากร
+              </button>
+            </div>
+          </div>
 
-                        <button data-toggle="modal" data-target="#exampleModal" class="btn btn-success"><i
-                                class="fa fa-plus"> </i> เพิ่มบุคลากร</button>
-                    </div>
+          <div
+            class="modal fade"
+            id="create-modal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="create-modalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h3 class="modal-title" id="create-modalLabel">
+                    เพิ่มบุคลากร
+                  </h3>
                 </div>
-
-                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
-                    aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h3 class="modal-title" id="exampleModalLabel">เพิ่มบุคลากร</h3>
-                            </div>
-                            <div class="modal-body">
-                                <label for="">ชื่อ : </label>
-                                <input class="form-control" type="text">
-                                <label for="">เลขประจำตัว : </label>
-                                <input class="form-control" type="text">
-                                <label for="">นามสกุล : </label>
-                                <input class="form-control" type="text">
-                                <label for="">สังกัดหน่วยงานย่อย : </label>
-                                <select class="form-control" name="" id="">
-                                    <option value="1">เลือก</option>
-                                </select>
-                                <label for="">สังกัดหน่วยงานหลัก : </label>
-                                <select class="form-control" name="" id="">
-                                    <option value="1">เลือก</option>
-                                </select>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
-                                <button type="button" class="btn btn-primary">เพิ่ม</button>
-                            </div>
-                        </div>
-                    </div>
+                <div class="modal-body">
+                  <label for="">ชื่อ : </label>
+                  <input id="create-fname" class="form-control" type="text" />
+                  <label for="">นามสกุล : </label>
+                  <input id="create-lname" class="form-control" type="text" />
+                  <label for="">เลขประจำตัว : </label>
+                  <input id="create-number" class="form-control" type="text" />
+                  <label for="">สังกัดหน่วยงานย่อย : </label>
+                  <select id="create-branch" class="form-control" name="" id="">
+                    <option value="">เลือก</option>
+                  </select>
+                  <label for="">สังกัดหน่วยงานหลัก : </label>
+                  <select id="create-faculty" class="form-control" name="">
+                    <option value="">เลือก</option>
+                  </select>
                 </div>
-                <div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h3 class="modal-title" id="exampleModalLabel">แก้ไขบุคลากร</h3>
-                            </div>
-                            <div class="modal-body">
-                                <label for="">ชื่อ : </label>
-                                <input id="edit-name" class="form-control" type="text">
-                                <label for="">เลขประจำตัว : </label>
-                                <input class="form-control" type="text">
-                                <label for="">นามสกุล : </label>
-                                <input class="form-control" type="text">
-                                <label for="">สังกัดหน่วยงานย่อย : </label>
-                                <select class="form-control" name="" id="">
-                                    <option value="1">เลือก</option>
-                                </select>
-                                <label for="">สังกัดหน่วยงานหลัก : </label>
-                                <select class="form-control" name="" id="">
-                                    <option value="1">เลือก</option>
-                                </select>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
-                                <button type="button" class="btn btn-primary">บันทึก</button>
-                            </div>
-                        </div>
-                    </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-dismiss="modal"
+                  >
+                    ยกเลิก
+                  </button>
+                  <button
+                    id="confirmCreatePersonal"
+                    type="button"
+                    class="btn btn-primary"
+                  >
+                    เพิ่ม
+                  </button>
                 </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="modal fade"
+            id="modal-edit"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="create-modalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h3 class="modal-title" id="create-modalLabel">
+                    แก้ไขบุคลากร
+                  </h3>
+                </div>
+                <div class="modal-body">
+                  <input style="display: none" type="text" name="" id="pOid" />
+                  <label for="">ชื่อ : </label>
+                  <input id="edit-fname" class="form-control" type="text" />
+                  <label for="">นามสกุล : </label>
+                  <input id="edit-lname" class="form-control" type="text" />
+                  <label for="">เลขประจำตัว : </label>
+                  <input id="edit-number" class="form-control" type="text" />
+                  <label for="">สังกัดหน่วยงานย่อย : </label>
+                  <select class="form-control" name="" id="edit-branch">
+                    <option value="1">เลือก</option>
+                  </select>
+                  <label for="">สังกัดหน่วยงานหลัก : </label>
+                  <select class="form-control" name="" id="edit-faculty">
+                    <option value="1">เลือก</option>
+                  </select>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-dismiss="modal"
+                  >
+                    ยกเลิก
+                  </button>
+                  <button
+                    id="confirmEditPersonal"
+                    type="button"
+                    class="btn btn-primary"
+                  >
+                    บันทึก
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
-            </section>
+        <!-- Main content -->
+        <section class="content container-fluid">
+          <table id="myTable">
+            <thead>
+              <tr>
+                <th>ลำดับ</th>
+                <th>เลขประจำตัว</th>
+                <th>ชื่อ</th>
+                <th>นามสกุล</th>
+                <th>สังกัดหน่วยงานย่อย</th>
+                <th>สังกัดหน่วยงานหลัก</th>
+                <th>จัดการ</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody">
+              <!-- ที่นี่จะเพิ่มข้อมูลในภายหลัง -->
+            </tbody>
+          </table>
+        </section>
+        <!-- /.content -->
+      </div>
 
-            <!-- Main content -->
-            <section class="content container-fluid">
-                <table id="myTable">
-                    <thead>
-                        <tr>
-                            <th>ลำดับ</th>
-                            <th>เลขประจำตัว</th>
-                            <th>ชื่อ</th>
-                            <th>นามสกุล</th>
-                            <th>สังกัดหน่วยงานย่อย</th>
-                            <th>สังกัดหน่วยงานหลัก</th>
-                            <th>จัดการ</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tableBody">
-                        <!-- ที่นี่จะเพิ่มข้อมูลในภายหลัง -->
-                    </tbody>
-                </table>
-            </section>
-            <!-- /.content -->
-        </div>
-
-        <div class="control-sidebar-bg"></div>
-        <!-- content -->
+      <div class="control-sidebar-bg"></div>
+      <!-- content -->
     </div>
     <!-- ./wrapper -->
 
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/adminlte.min.js"></script>
-    <script type="text/javascript" charset="utf8"
-        src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+    <script
+      type="text/javascript"
+      charset="utf8"
+      src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"
+    ></script>
     <!-- Thai language file -->
-    <script type="text/javascript" charset="utf8"
-        src="https://cdn.datatables.net/plug-ins/1.10.24/i18n/Thai.json"></script>
+    <script
+      type="text/javascript"
+      charset="utf8"
+      src="https://cdn.datatables.net/plug-ins/1.10.24/i18n/Thai.json"
+    ></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.1/dist/sweetalert2.all.min.js"></script>
 
     <script>
-        $(document).ready(function () {
-            var data;
+      $(document).ready(function () {
+        var data;
 
-            function editPersonel(id) {
-                console.log(id)
-                var selectedData = data[id - 1];
-                $('#edit-name').val(selectedData.name)
-                $('#modal-edit').modal('show');
-            }
-
-            function delEven(id) {
-                var selectedData = data[id];
-                console.log(selectedData);
+        $("#confirmEditPersonal").on("click", function () {
+          var updatedData = {
+            id: $("#pOid").val(),
+            first_name: $("#edit-fname").val(),
+            last_name: $("#edit-lname").val(),
+            personnel_number: $("#edit-number").val(),
+            faculty_id: $("#edit-faculty").val(), // ตัวอย่างเท่านั้น แต่ควรเป็นในฟอร์มของคุณ
+            branch_id: $("#edit-branch").val(), // ตัวอย่างเท่านั้น แต่ควรเป็นในฟอร์มของคุณ
+          };
+          $.ajax({
+            url: "../api/editPersonal.php", // ต้องแก้ไขเป็น URL ของไฟล์ PHP ที่ทำการอัปเดตบุคลากร
+            type: "POST",
+            data: updatedData,
+            success: function (response) {
+              let res = JSON.parse(response);
+              if (res.status === "success") {
                 Swal.fire({
-                    title: "ยืนยันการลบบุคลากร",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonText: "ยืนยัน",
-                    cancelButtonText: "ยกเลิก"
+                  title: "อัปเดตสำเร็จ",
+                  icon: "success",
+                }).then(() => {
+                  $("#modal-edit").modal("hide");
+                  reloadData(); // Reload the table data
                 });
-                /*
-                $.ajax({
-                  url: 'URL_API_ของคุณ',
-                  type: 'DELETE',
-                  data: { id: selectedData.id },
-                  success: function(response) {
-                    console.log('ลบข้อมูลสำเร็จ', response);
-              
-                    / 
-                    loadDataFromApi();
-                  },
-                  error: function(error) {
-                    console.error('เกิดข้อผิดพลาดในการลบข้อมูล', error);
-                  }
+              } else {
+                Swal.fire({
+                  title: "เกิดข้อผิดพลาด",
+                  text: "ไม่สามารถอัปเดตข้อมูลได้",
+                  icon: "error",
                 });
-                */
-            }
-
-            function loadDataFromApi() {
-                $.ajax({
-                    url: "../api/getEven.php",
-                    type: 'GET',
-                    success: function (response) {
-                        data = JSON.parse(response);
-                        updateDataTable(data);
-                    },
-                    error: function (error) {
-                        console.error('เกิดข้อผิดพลาดในการโหลดข้อมูลจาก API', error);
-                    }
+              }
+            },
+            error: function (error) {
+              let res = JSON.parse(error.responseText);
+              Swal.fire({
+                title: "เกิดข้อผิดพลาด",
+                text: res.message,
+                icon: "error",
+              });
+            },
+          });
+        });
+        $("#confirmCreatePersonal").on("click", function () {
+          var updatedData = {
+            first_name: $("#create-fname").val(),
+            last_name: $("#create-lname").val(),
+            personnel_number: $("#create-number").val(),
+            faculty_id: $("#create-faculty").val(),
+            branch_id: $("#create-branch").val(),
+          };
+          $.ajax({
+            url: "../api/addPersonal.php",
+            type: "POST",
+            data: updatedData,
+            success: function (response) {
+              let res = JSON.parse(response);
+              if (res.status === "success") {
+                Swal.fire({
+                  title: "เพิ่มสำเร็จ",
+                  icon: "success",
+                }).then(() => {
+                  $("#create-modal").modal("hide");
+                  $("#create-fname").val(""),
+                    $("#create-lname").val(""),
+                    $("#create-number").val(""),
+                    reloadData();
                 });
-            }
-
-            function updateDataTable(data) {
-                var tableBody = $('#tableBody');
-                tableBody.empty();
-
-                $.each(data, function (index, item) {
-                    var editButton = $('<button>', {
-                        text: 'แก้ไข',
-                        class: 'btn btn-warning',
-                        style: 'margin-right:5px;',
-                        click: function () {
-                            editPersonel(item.id);
-                        }
-                    });
-                    var delButton = $('<button>', {
-                        text: 'ลบ',
-                        class: 'btn btn-danger',
-                        style: 'margin-left:5px;',
-                        click: function () {
-                            delEven(item.id);
-                        }
-                    });
-
-                    delButton.append('<i style="margin-left:2px;" class="bi bi-trash"></i>');
-                    editButton.append('<i style="margin-left:2px;" class="bi bi-pencil"></i>');
-                    tableBody.append($('<tr>').append($('<td>').text(item.id), $('<td>').text("-"), $('<td>').text("-"), $('<td>').text("-"), $('<td>').text("-"), $('<td>').text("-"), $('<td>').append(editButton, delButton)));
+              } else {
+                Swal.fire({
+                  title: "เกิดข้อผิดพลาด",
+                  text: "ไม่สามารถเพิ่มข้อมูลได้",
+                  icon: "error",
                 });
-
-                // เปิดใช้ DataTables
-                $('#myTable').DataTable({
-                    "language": {
-                        "url": "https://cdn.datatables.net/plug-ins/1.10.24/i18n/Thai.json",
-
-                    }
-                });
-            }
-
-            loadDataFromApi();
+              }
+            },
+            error: function (error) {
+              let res = JSON.parse(error.responseText);
+              Swal.fire({
+                title: "เกิดข้อผิดพลาด",
+                text: res.message,
+                icon: "error",
+              });
+            },
+          });
         });
 
-    </script>
-</body>
+        function getfaculty() {
+          return new Promise((resolve, reject) => {
+            $.ajax({
+              url: "../api/getfaculty.php",
+              type: "GET",
+              success: function (response) {
+                resolve(JSON.parse(response));
+              },
+              error: function (error) {
+                reject(error);
+              },
+            });
+          });
+        }
 
+        function getbranch() {
+          return new Promise((resolve, reject) => {
+            $.ajax({
+              url: "../api/getbranch.php",
+              type: "GET",
+              success: function (response) {
+                resolve(JSON.parse(response));
+              },
+              error: function (error) {
+                reject(error);
+              },
+            });
+          });
+        }
+
+        $("#createPersonal").click(async () => {
+          let faculties = await getfaculty();
+          let branches = await getbranch();
+
+          let facultyOptions = `<option value="">เลือก</option>`;
+          let branchOptions = `<option value="">เลือก</option>`;
+
+          // Populate faculty options
+          facultyOptions += faculties
+            .map((faculty) => {
+              return `<option value="${faculty.id}">${faculty.name}</option>`;
+            })
+            .join("");
+          $("#create-faculty").html(facultyOptions);
+
+          // Populate branch options
+          branchOptions += branches
+            .map((branch) => {
+              return `<option value="${branch.id}">${branch.name}</option>`;
+            })
+            .join("");
+          $("#create-branch").html(branchOptions);
+        });
+
+        async function editPersonel(id) {
+          console.log(id);
+          var selectedData = data[id - 1];
+
+          // Fetch faculty and branch data
+          let faculties = await getfaculty();
+          let branches = await getbranch();
+
+          // Populate faculty options
+          let facultyOptions = faculties
+            .map((faculty) => {
+              return `<option value="${faculty.id}">${faculty.name}</option>`;
+            })
+            .join("");
+          $("#edit-faculty").html(facultyOptions);
+
+          // Populate branch options
+          let branchOptions = branches
+            .map((branch) => {
+              return `<option value="${branch.id}">${branch.name}</option>`;
+            })
+            .join("");
+          $("#edit-branch").html(branchOptions);
+
+          $("#pOid").val(selectedData.id),
+            $("#edit-fname").val(selectedData.first_name);
+          $("#edit-lname").val(selectedData.last_name);
+          $("#edit-number").val(selectedData.personnel_number);
+          $("#edit-faculty").val(selectedData.faculty_id); //ใส่ seleted ให้กับอันเก่า
+          $("#edit-branch").val(selectedData.branch_id); //ใส่ seleted ให้กับอันเก่า
+
+          $("#modal-edit").modal("show");
+        }
+
+        function delPersonal(id) {
+          Swal.fire({
+            title: "ยืนยันการลบบุคลากร",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "ยืนยัน",
+            cancelButtonText: "ยกเลิก",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              $.ajax({
+                url: "../api/deletePersonal.php",
+                type: "POST",
+                data: { id: id },
+                success: function (response) {
+                  let res = JSON.parse(response);
+                  if (res.status == "success") {
+                    Swal.fire({
+                      title: "ลบสำเร็จ",
+                      icon: "success",
+                    }).then(() => {
+                      reloadData();
+                    });
+                  } else {
+                    Swal.fire({
+                      title: "เกิดข้อผิดพลาด",
+                      text: res.message,
+                      icon: "error",
+                    });
+                  }
+                },
+                error: function (error) {
+                  let res = JSON.parse(error.responseText);
+                  Swal.fire({
+                    title: "เกิดข้อผิดพลาด",
+                    text: res.message,
+                    icon: "error",
+                  });
+                },
+              });
+            }
+          });
+        }
+
+        function loadDataFromApi() {
+          $.ajax({
+            url: "../api/getPersonnel.php",
+            type: "GET",
+            success: function (response) {
+              data = JSON.parse(response);
+              console.log(data);
+              updateDataTable(data);
+            },
+            error: function (error) {},
+          });
+        }
+
+        function updateDataTable(data) {
+          var tableBody = $("#tableBody");
+          tableBody.empty();
+
+          $.each(data, function (index, item) {
+            var sequenceNumber = index + 1;
+            var editButton = $("<button>", {
+              text: "แก้ไข",
+              class: "btn btn-warning",
+              style: "margin-right:5px;",
+              click: function () {
+                editPersonel(item.id);
+              },
+            });
+            var delButton = $("<button>", {
+              text: "ลบ",
+              class: "btn btn-danger",
+              style: "margin-left:5px;",
+              click: function () {
+                delPersonal(item.id);
+              },
+            });
+
+            delButton.append(
+              '<i style="margin-left:2px;" class="bi bi-trash"></i>'
+            );
+            editButton.append(
+              '<i style="margin-left:2px;" class="bi bi-pencil"></i>'
+            );
+            tableBody.append(
+              $("<tr>").append(
+                $("<td>").text(sequenceNumber),
+                $("<td>").text(item.personnel_number),
+                $("<td>").text(item.first_name),
+                $("<td>").text(item.last_name),
+                $("<td>").text(item.facultyName),
+                $("<td>").text(item.branchName),
+                $("<td>").append(editButton, delButton)
+              )
+            );
+          });
+
+          // เปิดใช้ DataTables
+          $("#myTable").DataTable({
+            language: {
+              url: "https://cdn.datatables.net/plug-ins/1.10.24/i18n/Thai.json",
+            },
+          });
+        }
+        function reloadData() {
+          $("#myTable").DataTable().destroy();
+          loadDataFromApi();
+        }
+
+        loadDataFromApi();
+      });
+    </script>
+  </body>
 </html>

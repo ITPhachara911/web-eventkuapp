@@ -33,15 +33,11 @@
 
   <body class="skin-blue">
     <div class="wrapper">
-      <!-- Main Header -->
       <header class="main-header">
-        <!-- Logo -->
         <a href="index.html" class="logo">
           <span class="logo-mini"><b>A</b>LT</span>
           <span class="logo-lg">Event KU</span>
         </a>
-
-        <!-- Header Navbar -->
         <nav class="navbar navbar-static-top" role="navigation">
           <a
             href="#"
@@ -90,7 +86,6 @@
         </nav>
       </header>
 
-      <!-- Left side column. contains the logo and sidebar -->
       <aside class="main-sidebar">
         <section class="sidebar">
           <ul class="sidebar-menu" data-widget="tree">
@@ -142,20 +137,17 @@
         </section>
       </aside>
 
-      <!-- Content header -->
       <div class="content-wrapper">
         <section class="content-header">
-          <h1>เพิ่มกิจกรรมและการจัดงาน</h1>
+          <h1>แก้ไขกิจกรรมและการจัดงาน</h1>
         </section>
 
-        <!-- Main content -->
         <section class="content">
           <div class="row">
             <div class="col-md-11">
               <div class="">
                 <h5 class="" style="font-weight: bold">ชื่อกิจกรรม :</h5>
                 <input
-                  placeholder="ชื่อกิจกรรม"
                   id="name"
                   name="eventName"
                   class="form-control"
@@ -167,6 +159,7 @@
               <div class="col">
                 <h5 style="font-weight: bold">อาคาร :</h5>
                 <select
+                  onchange="loadRooms()"
                   id="Bding"
                   name="Bding"
                   class="form-control"
@@ -180,7 +173,7 @@
               </div>
               <div class="col">
                 <h5 style="font-weight: bold">ห้อง :</h5>
-                <select id="room" type="number" class="form-control">
+                <select id="room" name="room" class="form-control">
                   <option selected>เลือกห้อง</option>
                   <option value="1">One</option>
                   <option value="2">Two</option>
@@ -189,7 +182,7 @@
               </div>
               <div class="col">
                 <h5 style="font-weight: bold">บุคลากรที่รับผิดชอบ :</h5>
-                <select id="personnel" type="number" class="form-control">
+                <select id="personnel" name="personnel" class="form-control">
                   <option selected>เลือกบุคลากรที่รับผิดชอบ</option>
                   <option value="1">One</option>
                   <option value="2">Two</option>
@@ -198,7 +191,7 @@
               </div>
               <div class="col">
                 <h5 style="font-weight: bold">หน่วยงานหลักที่รับผิดชอบ :</h5>
-                <select id="mainOrg" type="number" class="form-control">
+                <select id="mainOrg" name="mainOrg" class="form-control">
                   <option selected>เลือกหน่วยงานหลักที่รับผิดชอบ</option>
                   <option value="1">One</option>
                   <option value="2">Two</option>
@@ -207,7 +200,7 @@
               </div>
               <div class="col">
                 <h5 style="font-weight: bold">หน่วยงานรองที่รับผิดชอบ :</h5>
-                <select id="subOrg" type="number" class="form-control">
+                <select id="subOrg" name="subOrg" class="form-control">
                   <option selected>เลือกหน่วยงานรองที่รับผิดชอบ</option>
                   <option value="1">One</option>
                   <option value="2">Two</option>
@@ -222,24 +215,23 @@
                 <h5 style="font-weight: bold">เลือกรูปที่ต้องการ :</h5>
                 <input
                   class="form-control form-control-lg"
-                  id="img"
+                  id="formFileLg"
                   name="img"
                   type="file"
                 />
               </div>
             </div>
+            <div id="img" class="col-md-6"></div>
           </div>
           <div class="row">
             <div class="form-group col-md-6" style="margin-top: 18px">
-              <h5 style="font-weight: bold">
-                เลือกวันที่เริ่มและวันที่สิ้นสุด:
-              </h5>
+              <h5 style="font-weight: bold">เลือกวันที่และเวลา:</h5>
               <div class="input-group">
                 <div class="input-group-addon">
                   <i class="fa fa-calendar"></i>
                 </div>
                 <input
-                  name="reteDate"
+                  name="time_period"
                   type="text"
                   class="form-control pull-right"
                   id="datetimepicker"
@@ -278,7 +270,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.1/dist/sweetalert2.all.min.js"></script>
     <script>
       $(function () {
-        //Date and Time picker
+        // Date and Time picker
         $("#datetimepicker").daterangepicker({
           timePicker: true,
           timePickerIncrement: 15,
@@ -289,6 +281,8 @@
             customRangeLabel: "Custom Range",
           },
         });
+
+        loadEvent();
       });
 
       function confirm() {
@@ -300,30 +294,20 @@
         let mainOrg = $("#mainOrg").val();
         let subOrg = $("#subOrg").val();
         let reteDate = $("#datetimepicker").val();
-        let img = $("#img")[0].files[0];
+        let formFile = $("#formFileLg")[0].files[0];
 
         if (
           Bding == "เลือกอาคาร" ||
           room == "เลือกห้อง" ||
-          name == "" ||
-          detail == "" ||
-          reteDate == "" ||
-          !img ||
           personnel == "เลือกบุคลากรที่รับผิดชอบ" ||
           mainOrg == "เลือกหน่วยงานหลักที่รับผิดชอบ" ||
-          subOrg == "เลือกหน่วยงานรองที่รับผิดชอบ"
+          subOrg == "เลือกหน่วยงานรองที่รับผิดชอบ" ||
+          name == "" ||
+          detail == "" ||
+          reteDate == ""
         ) {
           Swal.fire({
             title: "โปรดใส่ข้อมูลให้ถูกต้อง",
-            icon: "error",
-            confirmButtonText: "ยืนยัน",
-          });
-          return;
-        }
-
-        if (!img.type.startsWith("image/")) {
-          Swal.fire({
-            title: "ไฟล์ต้องเป็นรูปภาพ",
             icon: "error",
             confirmButtonText: "ยืนยัน",
           });
@@ -346,19 +330,27 @@
             formData.append("personnel", personnel);
             formData.append("mainOrg", mainOrg);
             formData.append("subOrg", subOrg);
-            formData.append("reteDate", reteDate);
-            formData.append("img", img);
+            formData.append("time_period", reteDate);
+            if (formFile) {
+              formData.append("img", formFile);
+            }
 
             $.ajax({
               type: "POST",
-              url: "../api/addEvent.php",
+              url: "../api/updateEvent.php",
               data: formData,
               processData: false,
               contentType: false,
               success: function (response) {
                 let res = JSON.parse(response);
                 if (res.status == "success") {
-                  window.location.href = "index.html";
+                  Swal.fire({
+                    title: "บันทึกสำเร็จ",
+                    icon: "success",
+                    confirmButtonText: "ยืนยัน",
+                  }).then(() => {
+                    window.location.href = "index.html";
+                  });
                 } else {
                   Swal.fire({
                     title: "เกิดข้อผิดพลาด",
@@ -371,13 +363,38 @@
               error: function (error) {
                 Swal.fire({
                   title: "เกิดข้อผิดพลาด",
-                  text: "ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์",
+                  text: "ไม่สามารถบันทึกข้อมูลได้",
                   icon: "error",
                   confirmButtonText: "ยืนยัน",
                 });
               },
             });
           }
+        });
+      }
+
+      async function loadEvent() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = await urlParams.get("id");
+
+        console.log(id);
+
+        $.ajax({
+          type: "GET",
+          url: `../api/getEvent.php?id=${id}`,
+          success: function (response) {
+            var data = JSON.parse(response);
+            console.log(data);
+            $("#name").val(data.name);
+            $("#detail").val(data.description);
+            $("#Bding").val(data.location_id);
+            $("#room").val(data.room_id);
+            $("#personnel").val(data.personnel_id);
+            $("#mainOrg").val(data.faculty_id);
+            $("#subOrg").val(data.branch_id);
+            $("#datetimepicker").val(`${data.start_date} - ${data.end_date}`);
+          },
+          error: function (error) {},
         });
       }
     </script>

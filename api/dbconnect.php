@@ -2,11 +2,18 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
+$dbname = "kuevent"; // เปลี่ยนเป็นชื่อฐานข้อมูลของคุณ
 
-// Create connection
-$conn = mysqli_connect($servername, $username, $password);
+// สร้างการเชื่อมต่อ
+$conn = new mysqli($servername, $username, $password, $dbname);
 
-// Check connection
-if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
+// ตรวจสอบการเชื่อมต่อ
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
+
+
+
+
+
+?>
