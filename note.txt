@@ -1,0 +1,22 @@
+event 👍
+location 👍
+Personal 👍
+========================
+room 👎
+    - add
+    - edit
+    - get 0.5
+    - del
+   
+Branch 👎
+    - add
+    - edit
+    - get 0.5 
+    - del
+   
+Faculty 👎
+    - add
+    - edit
+    - get 0.5
+    - del
+   
