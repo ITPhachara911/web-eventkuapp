@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if ($checkRow['referenceCount'] > 0) {
             // If there are references, return an error response
             http_response_code(400);
-            $response = array('status' => 'error', 'message' => 'Cannot delete personnel because it is referenced in other tables');
+            $response = array('status' => 'error', 'message' => 'Cannot delete personnel because it is referenced in event tables');
             echo json_encode($response);
             exit;
         }

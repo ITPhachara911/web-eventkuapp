@@ -5,18 +5,18 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
     if (isset($_GET['id'])) {
         $id = $_GET['id'];
 
-        $stmt = $conn->prepare("SELECT `faculty`.* FROM `facultys` WHERE id = ?;");
+        $stmt = $conn->prepare("SELECT `faculty`.* FROM `faculty` WHERE id = ?;");
         $stmt->bind_param("i", $id);  
         if ($stmt->execute()) {
             $result = $stmt->get_result();
-            $facultys = $result->fetch_assoc();
+            $faculty = $result->fetch_assoc();
 
-            if ($facultys) {
+            if ($faculty) {
                 http_response_code(200);
-                echo json_encode($facultys,);
+                echo json_encode($faculty,);
             } else {
                 http_response_code(404);
-                echo json_encode(['status' => 'error', 'message' => 'location not found']);
+                echo json_encode(['status' => 'error', 'message' => 'faculty not found']);
             }
         } else {
             http_response_code(500);

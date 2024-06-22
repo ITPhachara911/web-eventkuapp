@@ -22,7 +22,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if ($referenceCheck['count'] > 0) {
         http_response_code(400);
-        $response = array('status' => 'error', 'message' => 'Location is referenced in other tables and cannot be deleted');
+        $response = array('status' => 'error', 'message' => 'Location is referenced in events tables and cannot be deleted');
+        echo json_encode($response);
+        $referenceCheckStmt->close();
+        exit;
+    }
+    $referenceCheckStmt = $conn->prepare("SELECT COUNT(*) AS count FROM rooms WHERE location_id = ?");
+    $referenceCheckStmt->bind_param("i", $location_id);
+    $referenceCheckStmt->execute();
+    $referenceCheckResult = $referenceCheckStmt->get_result();
+    $referenceCheck = $referenceCheckResult->fetch_assoc();
+
+    if ($referenceCheck['count'] > 0) {
+        http_response_code(400);
+        $response = array('status' => 'error', 'message' => 'Location is referenced in rooms tables and cannot be deleted');
         echo json_encode($response);
         $referenceCheckStmt->close();
         exit;
