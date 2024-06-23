@@ -187,6 +187,66 @@
             </tbody>
           </table>
         </section>
+
+        <div
+          id="modal-detail"
+          class="modal fade"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="modal-detail-label"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div style="display: flex; margin: 0 20px 0 20px" class="row">
+                  <div id="showimg" class="">
+                    <img
+                      id="imageDisplay"
+                      width="250"
+                      height="250"
+                      src=""
+                      alt=""
+                    />
+                  </div>
+                  <div
+                    id="showdetail"
+                    style="
+                      padding: 20px;
+                      margin-left: 15px;
+                      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1);
+                      width: 100%;
+                      overflow: hidden;
+                      word-wrap: break-word;
+                    "
+                    class="card"
+                  ></div>
+                </div>
+              </div>
+
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- /.content -->
       </div>
 
@@ -220,10 +280,60 @@
           window.location.href = `editEvent.html?id=${id}`;
         }
 
+        function showdetail(id) {
+          $.ajax({
+            url: `../api/getEvent.php?id=${id}`,
+            type: "GET",
+            success: function (response) {
+              let res = JSON.parse(response);
+              $("#showdetail").html(
+                `
+                <p style="font-weight: bold;">รายละเอียดกิจกรรม : </p>
+                <p style="text-indent: 2.5em;">${
+                  res.description
+                }hfghjfjgjghjghhjghjghjghjghjgjghjghjgjgjgghjgjghjghjgjgjghjgjghjhgjgjhgjgjhgjgjhgjhgjhgjgjgjgjgjgjgjhgjghghjgjgjgjgj</p>
+           
+                     <div style="display:flex;">
+                    <p style="font-weight: bold;">ผู้รับผิดชอบ : </p>
+                    <p style="text-indent: 1em;"> ${
+                      res.personnel_fname + " " + res.personnel_lname
+                    }</p>
+                     </div>
+                    <div style="display:flex;">
+                    <p style="font-weight: bold;">หน่วยงานหลักที่รับผิดชอบ : </p>
+                    <p style="text-indent: 1em;"> ${res.faculty_name}</p>
+                     </div>
+
+                    <div style="display:flex;">
+                   <p style="font-weight: bold;">หน่วยงานรองที่รับผิดชอบ : </p>
+                    <p style="text-indent: 1em;"> ${res.faculty_name}</p>
+                     </div>
+
+                    `
+              );
+              $.ajax({
+                url: `../api/getImage.php?event_id=${id}`,
+                type: "GET",
+                xhrFields: {
+                  responseType: "blob", // Important for binary data
+                },
+                success: function (data) {
+                  var url = URL.createObjectURL(data);
+                  $("#imageDisplay").attr("src", url);
+                },
+                error: function () {
+                  alert("Failed to load image. Please check the image ID.");
+                },
+              });
+              $("#modal-detail").modal("show");
+            },
+            error: function (error) {},
+          });
+        }
+
         function delEvent(id) {
-          console.log(id);
           Swal.fire({
-            title: "ยืนยันการลบรายการกิจกรรม",
+            title: "ยืนยันการลบรายการอีเว้น",
             icon: "warning",
             showCancelButton: true,
             confirmButtonText: "ยืนยัน",
@@ -244,12 +354,19 @@
                       }).then(() => {
                         reloadData();
                       });
+                    } else {
+                      Swal.fire({
+                        title: "เกิดข้อผิดพลาด",
+                        text: res.message,
+                        icon: "error",
+                      });
                     }
                   },
                   error: function (error) {
+                    let res = JSON.parse(error.responseText);
                     Swal.fire({
                       title: "เกิดข้อผิดพลาด",
-                      text: "ไม่สามารถลบข้อมูลได้",
+                      text: res.message,
                       icon: "error",
                     });
                   },
@@ -265,7 +382,7 @@
             type: "GET",
             success: function (response) {
               data = JSON.parse(response);
-              console.log(data);
+
               updateDataTable(data);
             },
             error: function (error) {},
@@ -299,7 +416,7 @@
               class: "btn btn-info text-center",
               style: "margin-left:5px;",
               click: function () {
-                delEvent(item.id);
+                showdetail(item.id);
               },
             });
             delButton.append(

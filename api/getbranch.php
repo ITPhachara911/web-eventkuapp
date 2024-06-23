@@ -2,7 +2,30 @@
 require 'dbconnect.php';
 
 if ($_SERVER["REQUEST_METHOD"] === "GET") {
-    if (isset($_GET['id'])) {
+     if (isset($_GET['Facultyid'])) {
+        $id = $_GET['Facultyid'];
+
+        $stmt = $conn->prepare("SELECT `branch`.* FROM `branch` WHERE faculty_id = ?;");
+        $stmt->bind_param("i", $id);  
+        if ($stmt->execute()) {
+            $result = $stmt->get_result();
+            $branchs = $result->fetch_all(MYSQLI_ASSOC);
+
+            if ($branchs) {
+                http_response_code(200);
+                echo json_encode($branchs,);
+            } else {
+                http_response_code(404);
+                echo json_encode(['status' => 'error', 'message' => 'branch not found']);
+            }
+        } else {
+            http_response_code(500);
+            echo json_encode(['status' => 'error', 'message' => 'Database query failed']);
+        }
+        
+        $stmt->close();
+    }
+    else if (isset($_GET['id'])) {
         $id = $_GET['id'];
 
         $stmt = $conn->prepare("SELECT `branch`.* FROM `branch` WHERE id = ?;");
@@ -16,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
                 echo json_encode($branch,);
             } else {
                 http_response_code(404);
-                echo json_encode(['status' => 'error', 'message' => 'location not found']);
+                echo json_encode(['status' => 'error', 'message' => 'branch not found']);
             }
         } else {
             http_response_code(500);

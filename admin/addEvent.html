@@ -171,47 +171,34 @@
                   name="Bding"
                   class="form-control"
                   aria-label="Default select example"
-                >
-                  <option selected>เลือกอาคาร</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
-                </select>
+                ></select>
               </div>
               <div class="col">
                 <h5 style="font-weight: bold">ห้อง :</h5>
-                <select id="room" type="number" class="form-control">
-                  <option selected>เลือกห้อง</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
+                <select id="room" name="room" class="form-control">
+                  <option selected value="">เลือก</option>
                 </select>
               </div>
               <div class="col">
                 <h5 style="font-weight: bold">บุคลากรที่รับผิดชอบ :</h5>
-                <select id="personnel" type="number" class="form-control">
-                  <option selected>เลือกบุคลากรที่รับผิดชอบ</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
-                </select>
+                <select
+                  id="personnel"
+                  type="number"
+                  class="form-control"
+                ></select>
               </div>
               <div class="col">
                 <h5 style="font-weight: bold">หน่วยงานหลักที่รับผิดชอบ :</h5>
-                <select id="mainOrg" type="number" class="form-control">
-                  <option selected>เลือกหน่วยงานหลักที่รับผิดชอบ</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
-                </select>
+                <select
+                  id="mainOrg"
+                  type="number"
+                  class="form-control"
+                ></select>
               </div>
               <div class="col">
                 <h5 style="font-weight: bold">หน่วยงานรองที่รับผิดชอบ :</h5>
                 <select id="subOrg" type="number" class="form-control">
-                  <option selected>เลือกหน่วยงานรองที่รับผิดชอบ</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
+                  <option value="">เลือก</option>
                 </select>
               </div>
             </div>
@@ -278,6 +265,79 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.1/dist/sweetalert2.all.min.js"></script>
     <script>
       $(function () {
+        $("#Bding").change(async (e) => {
+          let locationId = e.target.value;
+          let RoomOptions = `<option value="">เลือก</option>`;
+
+          if (locationId) {
+            try {
+              let Rooms = await getRoom(locationId);
+              RoomOptions += Rooms.map((Room) => {
+                return `<option value="${Room.id}">${Room.room_number} ${Room.name}</option>`;
+              }).join("");
+            } catch (error) {
+              Swal.fire({
+                title: "มีบางอย่างผิดพลาด",
+                icon: "error",
+                confirmButtonText: "ยืนยัน",
+              });
+            }
+          }
+
+          $("#room").html(RoomOptions);
+        });
+        $("#mainOrg").change(async (e) => {
+          let Facultyid = e.target.value;
+          let branchOptions = `<option value="">เลือก</option>`;
+
+          if (Facultyid) {
+            try {
+              let Branches = await getbranch(Facultyid);
+              branchOptions += Branches.map((Branch) => {
+                return `<option value="${Branch.id}">${Branch.name}</option>`;
+              }).join("");
+            } catch (error) {
+              Swal.fire({
+                title: "มีบางอย่างผิดพลาด",
+                icon: "error",
+                confirmButtonText: "ยืนยัน",
+              });
+            }
+          }
+
+          $("#subOrg").html(branchOptions);
+        });
+        async function setaddEvent() {
+          let LocationOptions = `<option value="">เลือก</option>`;
+          let PersonalOptions = `<option value="">เลือก</option>`;
+          let facultyOptions = `<option value="">เลือก</option>`;
+
+          let Locations = await getLocation();
+          let Personals = await getPersonal();
+          let Facultys = await getfaculty();
+
+          // Populate faculty options
+          LocationOptions += Locations.map((Location) => {
+            return `<option value="${Location.id}">${Location.name}</option>`;
+          }).join("");
+
+          facultyOptions += Facultys.map((Faculty) => {
+            return `<option value="${Faculty.id}">${Faculty.name}</option>`;
+          }).join("");
+          PersonalOptions += Personals.map((Personal) => {
+            return `<option value="${Personal.id}">${
+              Personal.first_name +
+              " " +
+              Personal.last_name +
+              "  รหัสประจำตัว : " +
+              Personal.personnel_number
+            }</option>`;
+          }).join("");
+
+          $("#Bding").html(LocationOptions);
+          $("#personnel").html(PersonalOptions);
+          $("#mainOrg").html(facultyOptions);
+        }
         //Date and Time picker
         $("#datetimepicker").daterangepicker({
           timePicker: true,
@@ -289,7 +349,86 @@
             customRangeLabel: "Custom Range",
           },
         });
+        setaddEvent();
       });
+
+      function getPersonal() {
+        return new Promise((resolve, reject) => {
+          $.ajax({
+            url: "../api/getPersonnel.php",
+            type: "GET",
+            success: function (response) {
+              resolve(JSON.parse(response));
+            },
+            error: function (error) {
+              reject(error);
+            },
+          });
+        });
+      }
+      function getRoom(locationId) {
+        return new Promise((resolve, reject) => {
+          $.ajax({
+            url: `../api/getRoom.php?location=${locationId}`,
+            type: "GET",
+            success: function (response) {
+              try {
+                resolve(JSON.parse(response));
+              } catch (e) {
+                reject(new Error("Failed to parse JSON response"));
+              }
+            },
+            error: function (error) {
+              reject(error);
+            },
+          });
+        });
+      }
+
+      function getLocation() {
+        return new Promise((resolve, reject) => {
+          $.ajax({
+            url: "../api/getLocation.php",
+            type: "GET",
+            success: function (response) {
+              resolve(JSON.parse(response));
+            },
+            error: function (error) {
+              reject(error);
+            },
+          });
+        });
+      }
+
+      function getfaculty() {
+        return new Promise((resolve, reject) => {
+          $.ajax({
+            url: "../api/getfaculty.php",
+            type: "GET",
+            success: function (response) {
+              resolve(JSON.parse(response));
+            },
+            error: function (error) {
+              reject(error);
+            },
+          });
+        });
+      }
+
+      function getbranch(Facultyid) {
+        return new Promise((resolve, reject) => {
+          $.ajax({
+            url: `../api/getbranch.php?Facultyid=${Facultyid}`,
+            type: "GET",
+            success: function (response) {
+              resolve(JSON.parse(response));
+            },
+            error: function (error) {
+              reject(error);
+            },
+          });
+        });
+      }
 
       function confirm() {
         let name = $("#name").val();
@@ -301,6 +440,16 @@
         let subOrg = $("#subOrg").val();
         let reteDate = $("#datetimepicker").val();
         let img = $("#img")[0].files[0];
+
+        if (!img.type.startsWith("image/")) {
+          console.log("test");
+          Swal.fire({
+            title: "ไฟล์ต้องเป็นรูปภาพ",
+            icon: "error",
+            confirmButtonText: "ยืนยัน",
+          });
+          return;
+        }
 
         if (
           Bding == "เลือกอาคาร" ||
@@ -315,15 +464,6 @@
         ) {
           Swal.fire({
             title: "โปรดใส่ข้อมูลให้ถูกต้อง",
-            icon: "error",
-            confirmButtonText: "ยืนยัน",
-          });
-          return;
-        }
-
-        if (!img.type.startsWith("image/")) {
-          Swal.fire({
-            title: "ไฟล์ต้องเป็นรูปภาพ",
             icon: "error",
             confirmButtonText: "ยืนยัน",
           });

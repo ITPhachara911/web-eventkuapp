@@ -148,6 +148,7 @@
               <div class="">
                 <h5 class="" style="font-weight: bold">ชื่อกิจกรรม :</h5>
                 <input
+                  placeholder="ชื่อกิจกรรม"
                   id="name"
                   name="eventName"
                   class="form-control"
@@ -159,52 +160,38 @@
               <div class="col">
                 <h5 style="font-weight: bold">อาคาร :</h5>
                 <select
-                  onchange="loadRooms()"
                   id="Bding"
                   name="Bding"
                   class="form-control"
                   aria-label="Default select example"
-                >
-                  <option selected>เลือกอาคาร</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
-                </select>
+                ></select>
               </div>
               <div class="col">
                 <h5 style="font-weight: bold">ห้อง :</h5>
                 <select id="room" name="room" class="form-control">
-                  <option selected>เลือกห้อง</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
+                  <option selected value="">เลือก</option>
                 </select>
               </div>
               <div class="col">
                 <h5 style="font-weight: bold">บุคลากรที่รับผิดชอบ :</h5>
-                <select id="personnel" name="personnel" class="form-control">
-                  <option selected>เลือกบุคลากรที่รับผิดชอบ</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
-                </select>
+                <select
+                  id="personnel"
+                  name="personnel"
+                  class="form-control"
+                ></select>
               </div>
               <div class="col">
                 <h5 style="font-weight: bold">หน่วยงานหลักที่รับผิดชอบ :</h5>
-                <select id="mainOrg" name="mainOrg" class="form-control">
-                  <option selected>เลือกหน่วยงานหลักที่รับผิดชอบ</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
-                </select>
+                <select
+                  id="mainOrg"
+                  name="mainOrg"
+                  class="form-control"
+                ></select>
               </div>
               <div class="col">
                 <h5 style="font-weight: bold">หน่วยงานรองที่รับผิดชอบ :</h5>
                 <select id="subOrg" name="subOrg" class="form-control">
-                  <option selected>เลือกหน่วยงานรองที่รับผิดชอบ</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
+                  <option selected value="">เลือก</option>
                 </select>
               </div>
             </div>
@@ -281,6 +268,132 @@
             customRangeLabel: "Custom Range",
           },
         });
+        $("#Bding").change(async (e) => {
+          let locationId = e.target.value;
+          let RoomOptions = `<option value="">เลือก</option>`;
+
+          if (locationId) {
+            try {
+              let Rooms = await getRoom(locationId);
+              RoomOptions += Rooms.map((Room) => {
+                return `<option value="${Room.id}">${Room.room_number} ${Room.name}</option>`;
+              }).join("");
+            } catch (error) {
+              Swal.fire({
+                title: "มีบางอย่างผิดพลาด",
+                icon: "error",
+                confirmButtonText: "ยืนยัน",
+              });
+            }
+          }
+
+          $("#room").html(RoomOptions);
+        });
+        $("#mainOrg").change(async (e) => {
+          let Facultyid = e.target.value;
+          let branchOptions = `<option value="">เลือก</option>`;
+
+          if (Facultyid) {
+            try {
+              let Branches = await getbranch(Facultyid);
+              branchOptions += Branches.map((Branch) => {
+                return `<option value="${Branch.id}">${Branch.name}</option>`;
+              }).join("");
+            } catch (error) {
+              Swal.fire({
+                title: "มีบางอย่างผิดพลาด",
+                icon: "error",
+                confirmButtonText: "ยืนยัน",
+              });
+            }
+          }
+
+          $("#subOrg").html(branchOptions);
+        });
+        async function loadEvent() {
+          const urlParams = new URLSearchParams(window.location.search);
+          const id = urlParams.get("id");
+
+          ////options
+          let RoomOptions = `<option value="">เลือก</option>`;
+          let LocationOptions = `<option value="">เลือก</option>`;
+          let PersonalOptions = `<option value="">เลือก</option>`;
+          let MainOrgOptions = `<option value="">เลือก</option>`;
+          let SubOrgOptions = `<option value="">เลือก</option>`;
+
+          if (id) {
+            let event = await getEvent(id);
+
+            let rooms = await getRoom(event.location_id);
+            RoomOptions += rooms
+              .map((room) => {
+                return event.room_id == room.id
+                  ? `<option selected value="${room.id}">${room.room_number} ${room.name}</option>`
+                  : `<option value="${room.id}">${room.room_number} ${room.name}</option>`;
+              })
+              .join("");
+
+            let locations = await getLocation();
+            LocationOptions += locations
+              .map((location) => {
+                return event.location_id == location.id
+                  ? `<option selected value="${location.id}">${location.name}</option>`
+                  : `<option value="${location.id}">${location.name}</option>`;
+              })
+              .join("");
+
+            let personals = await getPersonal();
+            PersonalOptions += personals
+              .map((personal) => {
+                return event.personnel_id == personal.id
+                  ? `<option selected value="${personal.id}">${personal.first_name} ${personal.last_name} รหัสประจำตัว : ${personal.personnel_number}</option>`
+                  : `<option value="${personal.id}">${personal.first_name} ${personal.last_name} รหัสประจำตัว : ${personal.personnel_number}</option>`;
+              })
+              .join("");
+
+            let mainOrgs = await getfaculty();
+            MainOrgOptions += mainOrgs
+              .map((faculty) => {
+                return event.faculty_id == faculty.id
+                  ? `<option selected value="${faculty.id}">${faculty.name}</option>`
+                  : `<option value="${faculty.id}">${faculty.name}</option>`;
+              })
+              .join("");
+
+            let subOrgs = await getbranch(event.faculty_id);
+            SubOrgOptions += subOrgs
+              .map((branch) => {
+                return event.branch_id == branch.id
+                  ? `<option selected value="${branch.id}">${branch.name}</option>`
+                  : `<option value="${branch.id}">${branch.name}</option>`;
+              })
+              .join("");
+
+            $("#name").val(event.name);
+            $("#detail").val(event.description);
+            $("#Bding").html(LocationOptions);
+            $("#room").html(RoomOptions);
+            $("#personnel").html(PersonalOptions);
+            $("#mainOrg").html(MainOrgOptions);
+            $("#subOrg").html(SubOrgOptions);
+            $("#datetimepicker").val(event.start_date + " - " + event.end_date);
+          }
+        }
+
+        async function getEvent(id) {
+          return new Promise((resolve, reject) => {
+            $.ajax({
+              url: `../api/getEvent.php?id=${id}`,
+              type: "GET",
+              success: function (response) {
+                resolve(JSON.parse(response));
+              },
+              error: function (error) {
+                reject(error);
+              },
+            });
+          });
+        }
 
         loadEvent();
       });
@@ -373,28 +486,82 @@
         });
       }
 
-      async function loadEvent() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const id = await urlParams.get("id");
+      function getPersonal() {
+        return new Promise((resolve, reject) => {
+          $.ajax({
+            url: "../api/getPersonnel.php",
+            type: "GET",
+            success: function (response) {
+              resolve(JSON.parse(response));
+            },
+            error: function (error) {
+              reject(error);
+            },
+          });
+        });
+      }
 
-        console.log(id);
+      function getRoom(locationId) {
+        return new Promise((resolve, reject) => {
+          $.ajax({
+            url: `../api/getRoom.php?location=${locationId}`,
+            type: "GET",
+            success: function (response) {
+              try {
+                resolve(JSON.parse(response));
+              } catch (e) {
+                reject(new Error("Failed to parse JSON response"));
+              }
+            },
+            error: function (error) {
+              reject(error);
+            },
+          });
+        });
+      }
 
-        $.ajax({
-          type: "GET",
-          url: `../api/getEvent.php?id=${id}`,
-          success: function (response) {
-            var data = JSON.parse(response);
-            console.log(data);
-            $("#name").val(data.name);
-            $("#detail").val(data.description);
-            $("#Bding").val(data.location_id);
-            $("#room").val(data.room_id);
-            $("#personnel").val(data.personnel_id);
-            $("#mainOrg").val(data.faculty_id);
-            $("#subOrg").val(data.branch_id);
-            $("#datetimepicker").val(`${data.start_date} - ${data.end_date}`);
-          },
-          error: function (error) {},
+      function getLocation() {
+        return new Promise((resolve, reject) => {
+          $.ajax({
+            url: "../api/getLocation.php",
+            type: "GET",
+            success: function (response) {
+              resolve(JSON.parse(response));
+            },
+            error: function (error) {
+              reject(error);
+            },
+          });
+        });
+      }
+
+      function getfaculty() {
+        return new Promise((resolve, reject) => {
+          $.ajax({
+            url: "../api/getfaculty.php",
+            type: "GET",
+            success: function (response) {
+              resolve(JSON.parse(response));
+            },
+            error: function (error) {
+              reject(error);
+            },
+          });
+        });
+      }
+
+      function getbranch(Facultyid) {
+        return new Promise((resolve, reject) => {
+          $.ajax({
+            url: `../api/getbranch.php?Facultyid=${Facultyid}`,
+            type: "GET",
+            success: function (response) {
+              resolve(JSON.parse(response));
+            },
+            error: function (error) {
+              reject(error);
+            },
+          });
         });
       }
     </script>
