@@ -190,17 +190,38 @@
                 </div>
                 <div class="modal-body">
                   <label for="">ชื่อ : </label>
-                  <input id="create-fname" class="form-control" type="text" />
+                  <input
+                    placeholder="ชื่อ"
+                    id="create-fname"
+                    class="form-control"
+                    type="text"
+                  />
                   <label for="">นามสกุล : </label>
-                  <input id="create-lname" class="form-control" type="text" />
+                  <input
+                    placeholder="นามสกุล"
+                    id="create-lname"
+                    class="form-control"
+                    type="text"
+                  />
                   <label for="">เลขประจำตัว : </label>
-                  <input id="create-number" class="form-control" type="text" />
-                  <label for="">สังกัดหน่วยงานย่อย : </label>
-                  <select id="create-branch" class="form-control" name="" id="">
-                    <option value="">เลือก</option>
-                  </select>
+                  <input
+                    placeholder="เลขประจำตัว"
+                    id="create-number"
+                    class="form-control"
+                    type="text"
+                  />
                   <label for="">สังกัดหน่วยงานหลัก : </label>
                   <select id="create-faculty" class="form-control" name="">
+                    <option value="">เลือก</option>
+                  </select>
+                  <label for="">สังกัดหน่วยงานย่อย : </label>
+                  <select
+                    disabled
+                    id="create-branch"
+                    class="form-control"
+                    name=""
+                    id=""
+                  >
                     <option value="">เลือก</option>
                   </select>
                 </div>
@@ -246,12 +267,18 @@
                   <input id="edit-lname" class="form-control" type="text" />
                   <label for="">เลขประจำตัว : </label>
                   <input id="edit-number" class="form-control" type="text" />
-                  <label for="">สังกัดหน่วยงานย่อย : </label>
-                  <select class="form-control" name="" id="edit-branch">
-                    <option value="1">เลือก</option>
-                  </select>
+
                   <label for="">สังกัดหน่วยงานหลัก : </label>
                   <select class="form-control" name="" id="edit-faculty">
+                    <option value="1">เลือก</option>
+                  </select>
+                  <label for="">สังกัดหน่วยงานย่อย : </label>
+                  <select
+                    disabled
+                    class="form-control"
+                    name=""
+                    id="edit-branch"
+                  >
                     <option value="1">เลือก</option>
                   </select>
                 </div>
@@ -322,6 +349,56 @@
     <script>
       $(document).ready(function () {
         var data;
+        $("#create-modal").on("hidden.bs.modal", function (e) {
+          $("#create-branch").attr("disabled", "disabled");
+        });
+
+        $("#edit-faculty").change((e) => setbranchforEdit(e));
+        async function setbranchforEdit(e) {
+          let Facultyid = e.target.value;
+          let branchOptions = `<option value="">เลือก</option>`;
+
+          if (Facultyid) {
+            try {
+              let Branches = await getbranch(Facultyid);
+
+              branchOptions += Branches.map((Branch) => {
+                return `<option value="${Branch.id}">${Branch.name}</option>`;
+              }).join("");
+            } catch (error) {
+              Swal.fire({
+                title: "มีบางอย่างผิดพลาด",
+                icon: "error",
+                confirmButtonText: "ยืนยัน",
+              });
+            }
+          }
+
+          $("#edit-branch").html(branchOptions);
+          $("#edit-branch").removeAttr("disabled");
+        }
+        $("#create-faculty").change((e) => setbranchforCreate(e));
+        async function setbranchforCreate(e) {
+          let Facultyid = e.target.value;
+          let branchOptions = `<option value="">เลือก</option>`;
+          if (Facultyid) {
+            try {
+              let Branches = await getbranch(Facultyid);
+              branchOptions += Branches.map((Branch) => {
+                return `<option value="${Branch.id}">${Branch.name}</option>`;
+              }).join("");
+            } catch (error) {
+              Swal.fire({
+                title: "มีบางอย่างผิดพลาด",
+                icon: "error",
+                confirmButtonText: "ยืนยัน",
+              });
+            }
+          }
+
+          $("#create-branch").html(branchOptions);
+          $("#create-branch").removeAttr("disabled");
+        }
 
         $("#confirmEditPersonal").on("click", function () {
           var updatedData = {
@@ -423,19 +500,34 @@
           });
         }
 
-        function getbranch() {
-          return new Promise((resolve, reject) => {
-            $.ajax({
-              url: "../api/getbranch.php",
-              type: "GET",
-              success: function (response) {
-                resolve(JSON.parse(response));
-              },
-              error: function (error) {
-                reject(error);
-              },
+        function getbranch(Facultyid) {
+          if (Facultyid) {
+            return new Promise((resolve, reject) => {
+              $.ajax({
+                url: `../api/getbranch.php?Facultyid=${Facultyid}`,
+                type: "GET",
+                success: function (response) {
+                  resolve(JSON.parse(response));
+                },
+                error: function (error) {
+                  reject(error);
+                },
+              });
             });
-          });
+          } else {
+            return new Promise((resolve, reject) => {
+              $.ajax({
+                url: "../api/getbranch.php",
+                type: "GET",
+                success: function (response) {
+                  resolve(JSON.parse(response));
+                },
+                error: function (error) {
+                  reject(error);
+                },
+              });
+            });
+          }
         }
 
         $("#createPersonal").click(async () => {
@@ -463,15 +555,13 @@
         });
 
         async function editPersonel(id) {
-          console.log(id);
-          var selectedData = data[id - 1];
-
+          $("#edit-branch").attr("disabled", "disabled");
+          let facultyOptions = `<option value="">เลือก</option>`;
+          let branchOptions = `<option value="">เลือก</option>`;
           // Fetch faculty and branch data
           let faculties = await getfaculty();
           let branches = await getbranch();
-
-          // Populate faculty options
-          let facultyOptions = faculties
+          facultyOptions += faculties
             .map((faculty) => {
               return `<option value="${faculty.id}">${faculty.name}</option>`;
             })
@@ -479,21 +569,42 @@
           $("#edit-faculty").html(facultyOptions);
 
           // Populate branch options
-          let branchOptions = branches
+          branchOptions += branches
             .map((branch) => {
               return `<option value="${branch.id}">${branch.name}</option>`;
             })
             .join("");
           $("#edit-branch").html(branchOptions);
+          $.ajax({
+            url: `../api/getPersonnel.php?id=${id}`,
+            type: "GET",
+            success: function (response) {
+              let res = JSON.parse(response);
+              if (res.status == "error") {
+                Swal.fire({
+                  title: "เกิดข้อผิดพลาด",
+                  text: res.message,
+                  icon: "error",
+                });
+              } else {
+                $("#pOid").val(res.id), $("#edit-fname").val(res.first_name);
+                $("#edit-lname").val(res.last_name);
+                $("#edit-number").val(res.personnel_number);
+                $("#edit-faculty").val(res.faculty_id); //ใส่ seleted ให้กับอันเก่า
+                $("#edit-branch").val(res.branch_id); //ใส่ seleted ให้กับอันเก่า
 
-          $("#pOid").val(selectedData.id),
-            $("#edit-fname").val(selectedData.first_name);
-          $("#edit-lname").val(selectedData.last_name);
-          $("#edit-number").val(selectedData.personnel_number);
-          $("#edit-faculty").val(selectedData.faculty_id); //ใส่ seleted ให้กับอันเก่า
-          $("#edit-branch").val(selectedData.branch_id); //ใส่ seleted ให้กับอันเก่า
-
-          $("#modal-edit").modal("show");
+                $("#modal-edit").modal("show");
+              }
+            },
+            error: function (error) {
+              let res = JSON.parse(error.responseText);
+              Swal.fire({
+                title: "เกิดข้อผิดพลาด",
+                text: res.message,
+                icon: "error",
+              });
+            },
+          });
         }
 
         function delPersonal(id) {
@@ -545,7 +656,7 @@
             type: "GET",
             success: function (response) {
               data = JSON.parse(response);
-              console.log(data);
+
               updateDataTable(data);
             },
             error: function (error) {},
@@ -587,8 +698,8 @@
                 $("<td>").text(item.personnel_number),
                 $("<td>").text(item.first_name),
                 $("<td>").text(item.last_name),
-                $("<td>").text(item.facultyName),
                 $("<td>").text(item.branchName),
+                $("<td>").text(item.facultyName),
                 $("<td>").append(editButton, delButton)
               )
             );

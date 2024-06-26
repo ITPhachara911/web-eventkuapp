@@ -187,17 +187,29 @@
                 </div>
                 <div class="modal-body">
                   <label for="">ชื่อ : </label>
-                  <input id="CreateLoname" class="form-control" type="text" />
+                  <input
+                    placeholder="ชื่อ"
+                    id="CreateLoname"
+                    class="form-control"
+                    type="text"
+                  />
                   <label for="">เลขอาคาร : </label>
-                  <input id="CreateLonum" class="form-control" type="text" />
+                  <input
+                    placeholder="เลขอาคาร"
+                    id="CreateLonum"
+                    class="form-control"
+                    type="text"
+                  />
                   <label for="">ละติจูด : </label>
                   <input
+                    placeholder="ละติจูด"
                     id="CreateLolatitude"
                     class="form-control"
                     type="text"
                   />
                   <label for="">ลองติจูด : </label>
                   <input
+                    placeholder="ลองติจูด"
                     id="CreateLolongitude"
                     class="form-control"
                     type="text"
@@ -331,7 +343,7 @@
               let res = JSON.parse(response);
               if (res.status === "success") {
                 Swal.fire({
-                  title: "สร้างสำเร็จ",
+                  title: "เพิ่มสำเร็จ",
                   icon: "success",
                 }).then(() => {
                   $("#modal-create").modal("hide");
@@ -391,16 +403,37 @@
         });
 
         function editLocation(id) {
-          var selectedData = data[id - 1];
-          $("#Loname").val(selectedData.name);
-          $("#Loid").val(selectedData.id);
-          $("#Lolatitude").val(selectedData.latitude);
-          $("#Lolongitude").val(selectedData.longitude);
-          $("#Lonum").val(selectedData.building_number);
-          $("#modal-edit").modal("show");
+          $.ajax({
+            url: `../api/getLocation.php?id=${id}`,
+            type: "GET",
+            success: function (response) {
+              let res = JSON.parse(response);
+              if (res.status == "error") {
+                Swal.fire({
+                  title: "เกิดข้อผิดพลาด",
+                  text: res.message,
+                  icon: "error",
+                });
+              } else {
+                $("#Loname").val(res.name);
+                $("#Loid").val(res.id);
+                $("#Lolatitude").val(res.latitude);
+                $("#Lolongitude").val(res.longitude);
+                $("#Lonum").val(res.building_number);
+                $("#modal-edit").modal("show");
+              }
+            },
+            error: function (error) {
+              let res = JSON.parse(error.responseText);
+              Swal.fire({
+                title: "เกิดข้อผิดพลาด",
+                text: res.message,
+                icon: "error",
+              });
+            },
+          });
         }
         function delLocation(id) {
-          console.log(id);
           Swal.fire({
             title: "ยืนยันการลบรายการสถานที่",
             icon: "warning",
@@ -451,7 +484,6 @@
             type: "GET",
             success: function (response) {
               data = JSON.parse(response);
-              console.log(data);
               updateDataTable(data);
             },
             error: function (error) {},

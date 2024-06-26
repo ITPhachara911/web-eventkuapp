@@ -47,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
         
         $stmt->close();
     } else {
-        $sql = "SELECT `rooms`.* FROM `rooms`";
+        $sql = "SELECT `rooms`.*,`location`.`name` as location_name FROM `rooms` left join location on rooms.location_id = location.id;";
         $result = $conn->query($sql);
 
         if ($result) {

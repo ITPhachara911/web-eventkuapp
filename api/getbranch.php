@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
     else if (isset($_GET['id'])) {
         $id = $_GET['id'];
 
-        $stmt = $conn->prepare("SELECT `branch`.* FROM `branch` WHERE id = ?;");
+        $stmt = $conn->prepare("SELECT `branch`.* FROM `branch`  WHERE branch.id = ?;");
         $stmt->bind_param("i", $id);  
         if ($stmt->execute()) {
             $result = $stmt->get_result();
@@ -48,8 +48,8 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
         
         $stmt->close();
     } else {
-        $sql = "SELECT `branch`.*
-        FROM `branch`";
+        $sql = "SELECT `branch`.*, faculty.name as faculty_name
+        FROM `branch`left join faculty on branch.faculty_id = faculty.id";
         $result = $conn->query($sql);
 
         if ($result) {

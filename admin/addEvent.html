@@ -175,7 +175,7 @@
               </div>
               <div class="col">
                 <h5 style="font-weight: bold">ห้อง :</h5>
-                <select id="room" name="room" class="form-control">
+                <select disabled id="room" name="room" class="form-control">
                   <option selected value="">เลือก</option>
                 </select>
               </div>
@@ -197,7 +197,7 @@
               </div>
               <div class="col">
                 <h5 style="font-weight: bold">หน่วยงานรองที่รับผิดชอบ :</h5>
-                <select id="subOrg" type="number" class="form-control">
+                <select disabled id="subOrg" type="number" class="form-control">
                   <option value="">เลือก</option>
                 </select>
               </div>
@@ -266,6 +266,7 @@
     <script>
       $(function () {
         $("#Bding").change(async (e) => {
+          $("#room").removeAttr("disabled");
           let locationId = e.target.value;
           let RoomOptions = `<option value="">เลือก</option>`;
 
@@ -287,6 +288,7 @@
           $("#room").html(RoomOptions);
         });
         $("#mainOrg").change(async (e) => {
+          $("#subOrg").removeAttr("disabled");
           let Facultyid = e.target.value;
           let branchOptions = `<option value="">เลือก</option>`;
 

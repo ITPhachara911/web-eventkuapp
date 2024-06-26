@@ -164,7 +164,7 @@
             <div style="margin-top: 20px; padding-left: 20px">
               <button
                 data-toggle="modal"
-                data-target="#exampleModal"
+                data-target="#create-modal"
                 class="btn btn-success"
               >
                 <i class="fa fa-plus"> </i> เพิ่มห้อง
@@ -174,26 +174,38 @@
 
           <div
             class="modal fade"
-            id="exampleModal"
+            id="create-modal"
             tabindex="-1"
             role="dialog"
-            aria-labelledby="exampleModalLabel"
+            aria-labelledby="create-modalLabel"
             aria-hidden="true"
           >
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h3 class="modal-title" id="exampleModalLabel">เพิ่มห้อง</h3>
+                  <h3 class="modal-title" id="create-modalLabel">เพิ่มห้อง</h3>
                 </div>
                 <div class="modal-body">
                   <label for="">ชื่อ : </label>
-                  <input class="form-control" type="text" />
+                  <input
+                    placeholder="ชื่อห้อง"
+                    id="create-roomname"
+                    class="form-control"
+                    type="text"
+                  />
                   <label for="">เลขห้อง : </label>
-                  <input class="form-control" type="text" />
-                  <label for="">เลือกอาคาร : </label>
-                  <select class="form-control" name="" id="">
-                    <option value="1">เลือก</option>
-                  </select>
+                  <input
+                    placeholder="เลขห้อง"
+                    id="create-roomnumber"
+                    class="form-control"
+                    type="text"
+                  />
+                  <label for="">เลือกสถานที่ : </label>
+                  <select
+                    class="form-control"
+                    name=""
+                    id="create-location"
+                  ></select>
                 </div>
                 <div class="modal-footer">
                   <button
@@ -203,7 +215,13 @@
                   >
                     ยกเลิก
                   </button>
-                  <button type="button" class="btn btn-primary">เพิ่ม</button>
+                  <button
+                    id="confirm-create"
+                    type="button"
+                    class="btn btn-primary"
+                  >
+                    เพิ่ม
+                  </button>
                 </div>
               </div>
             </div>
@@ -215,23 +233,22 @@
           id="modal-edit"
           tabindex="-1"
           role="dialog"
-          aria-labelledby="exampleModalLabel"
+          aria-labelledby="create-modalLabel"
           aria-hidden="true"
         >
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h3 class="modal-title" id="exampleModalLabel">แก้ไขห้อง</h3>
+                <h3 class="modal-title" id="create-modalLabel">แก้ไขห้อง</h3>
               </div>
               <div class="modal-body">
                 <label for="">ชื่อ : </label>
+                <input type="text" name="" style="display: none" id="id" />
                 <input id="edit-name" class="form-control" type="text" />
                 <label for="">เลขห้อง : </label>
-                <input class="form-control" type="text" />
-                <label for="">เลือกอาคาร : </label>
-                <select class="form-control" name="" id="">
-                  <option value="1">เลือก</option>
-                </select>
+                <input id="room_number" class="form-control" type="text" />
+                <label for="">เลือกสถานที่ : </label>
+                <select class="form-control" name="" id="location"></select>
               </div>
               <div class="modal-footer">
                 <button
@@ -241,7 +258,9 @@
                 >
                   ยกเลิก
                 </button>
-                <button type="button" class="btn btn-primary">บันทึก</button>
+                <button id="confirm-edit" type="button" class="btn btn-primary">
+                  บันทึก
+                </button>
               </div>
             </div>
           </div>
@@ -291,28 +310,206 @@
     <script>
       $(document).ready(function () {
         var data;
+        $("#confirm-create").click((e) => {
+          let dataCreate = {
+            name: $("#create-roomname").val(),
+            room_number: $("#create-roomnumber").val(),
+            location_id: $("#create-location").val(),
+          };
+
+          $.ajax({
+            url: "../api/addRoom.php",
+            type: "POST",
+            data: dataCreate,
+            success: function (response) {
+              let res = JSON.parse(response);
+              if (res.status == "success") {
+                Swal.fire({
+                  title: "เพิ่มสำเร็จ",
+                  icon: "success",
+                }).then(() => {
+                  $("#create-name").val("");
+                  $("#create-modal").modal("hide");
+                  setLocation();
+                  reloadData();
+                });
+              } else {
+                Swal.fire({
+                  title: "เกิดข้อผิดพลาด",
+                  text: res.message,
+                  icon: "error",
+                });
+              }
+            },
+            error: function (error) {
+              let res = JSON.parse(error.responseText);
+              Swal.fire({
+                title: "เกิดข้อผิดพลาด",
+                text: res.message,
+                icon: "error",
+              });
+            },
+          });
+        });
+        $("#confirm-edit").click((e) => {
+          let dataUpdate = {
+            id: $("#id").val(),
+            name: $("#edit-name").val(),
+            room_number: $("#room_number").val(),
+            location_id: $("#location").val(),
+          };
+          Swal.fire({
+            title: "ยืนยันการแก้ไขห้อง",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "ยืนยัน",
+            cancelButtonText: "ยกเลิก",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              $.ajax({
+                url: "../api/editRoom.php",
+                type: "POST",
+                data: dataUpdate,
+                success: function (response) {
+                  let res = JSON.parse(response);
+                  if (res.status == "success") {
+                    Swal.fire({
+                      title: "แก้ไขสำเร็จ",
+                      icon: "success",
+                    }).then(() => {
+                      $("#modal-edit").modal("hide");
+                      reloadData();
+                    });
+                  } else {
+                    Swal.fire({
+                      title: "เกิดข้อผิดพลาด",
+                      text: res.message,
+                      icon: "error",
+                    });
+                  }
+                },
+                error: function (error) {
+                  let res = JSON.parse(error.responseText);
+                  Swal.fire({
+                    title: "เกิดข้อผิดพลาด",
+                    text: res.message,
+                    icon: "error",
+                  });
+                },
+              });
+            }
+          });
+        });
 
         function editRoom(id) {
-          var selectedData = data[id - 1];
-          $("#edit-name").val(selectedData.name);
-          $("#modal-edit").modal("show");
+          $.ajax({
+            url: `../api/getRoom.php?id=${id}`,
+            type: "GET",
+            success: function (response) {
+              let res = JSON.parse(response);
+              if (res.status == "error") {
+                Swal.fire({
+                  title: "เกิดข้อผิดพลาด",
+                  text: res.message,
+                  icon: "error",
+                });
+              } else {
+                setLocation(res.location_id);
+                $("#edit-name").val(res.name);
+                $("#id").val(res.id);
+                $("#room_number").val(res.room_number);
+                $("#modal-edit").modal("show");
+              }
+            },
+            error: function (error) {
+              let res = JSON.parse(error.responseText);
+              Swal.fire({
+                title: "เกิดข้อผิดพลาด",
+                text: res.message,
+                icon: "error",
+              });
+            },
+          });
         }
 
         function delEven(id) {
-          var selectedData = data[id];
-          console.log(selectedData);
           Swal.fire({
             title: "ยืนยันการลบห้อง",
             icon: "warning",
             showCancelButton: true,
             confirmButtonText: "ยืนยัน",
             cancelButtonText: "ยกเลิก",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              $.ajax({
+                url: "../api/deleteRoom.php",
+                type: "POST",
+                data: { id: id },
+                success: function (response) {
+                  let res = JSON.parse(response);
+                  if (res.status == "success") {
+                    Swal.fire({
+                      title: "ลบสำเร็จ",
+                      icon: "success",
+                    }).then(() => {
+                      reloadData();
+                    });
+                  } else {
+                    Swal.fire({
+                      title: "เกิดข้อผิดพลาด",
+                      text: res.message,
+                      icon: "error",
+                    });
+                  }
+                },
+                error: function (error) {
+                  let res = JSON.parse(error.responseText);
+                  Swal.fire({
+                    title: "เกิดข้อผิดพลาด",
+                    text: res.message,
+                    icon: "error",
+                  });
+                },
+              });
+            }
+          });
+        }
+
+        async function setLocation(id) {
+          let LocationOptions = `<option value="">เลือก</option>`;
+          let Locations = await getLocation();
+          if (id) {
+            LocationOptions += Locations.map((Location) => {
+              return Location.id == id
+                ? `<option selected value="${Location.id}">${Location.name}</option>`
+                : `<option value="${Location.id}">${Location.name}</option>`;
+            });
+            $("#location").html(LocationOptions);
+          } else {
+            LocationOptions += Locations.map((Location) => {
+              return `<option value="${Location.id}">${Location.name}</option>`;
+            });
+            $("#create-location").html(LocationOptions);
+          }
+        }
+        function getLocation() {
+          return new Promise((resolve, reject) => {
+            $.ajax({
+              url: "../api/getLocation.php",
+              type: "GET",
+              success: function (response) {
+                resolve(JSON.parse(response));
+              },
+              error: function (error) {
+                reject(error);
+              },
+            });
           });
         }
 
         function loadDataFromApi() {
           $.ajax({
-            url: "../api/getEven.php",
+            url: "../api/getRoom.php",
             type: "GET",
             success: function (response) {
               data = JSON.parse(response);
@@ -327,6 +524,7 @@
           tableBody.empty();
 
           $.each(data, function (index, item) {
+            var sequenceNumber = index + 1;
             var editButton = $("<button>", {
               text: "แก้ไข",
               class: "btn btn-warning",
@@ -352,10 +550,10 @@
             );
             tableBody.append(
               $("<tr>").append(
-                $("<td>").text(item.id),
+                $("<td>").text(sequenceNumber),
                 $("<td>").text(item.name),
-                $("<td>").text(item.age),
-                $("<td>").text("-"),
+                $("<td>").text(item.room_number),
+                $("<td>").text(item.location_name),
                 $("<td>").append(editButton, delButton)
               )
             );
@@ -368,7 +566,11 @@
             },
           });
         }
-
+        function reloadData() {
+          $("#myTable").DataTable().destroy();
+          loadDataFromApi();
+        }
+        setLocation();
         loadDataFromApi();
       });
     </script>
